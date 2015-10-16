@@ -31,7 +31,6 @@
     "co-foreach": "^1.0.6",
     "co-request": "^0.2.0",
     "co-stream": "^0.1.0",
-    "@ripple/five-bells-shared": "2.6.3",
     "lodash": "^3.5.0",
     "mag": "^0.9.1",
     "mag-hub": "^0.1.1",
