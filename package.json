@@ -1,6 +1,6 @@
 {
   "name": "@ripple/five-bells-pathfind",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Basic pathfinding library",
   "main": "index.js",
   "scripts": {
