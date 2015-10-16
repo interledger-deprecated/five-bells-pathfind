@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict'
 
 let assert = require('assert')
@@ -38,7 +39,7 @@ describe('Graph', function () {
     const bigEdgeMap = {}
     rg.edges.forEach(function (e, i) {
       let source = e.source
-      if (bigEdgeMap[source] === undefined) {
+      if (bigEdgeMap[source] == null) {
         bigEdgeMap[source] = {}
       }
       bigEdgeMap[source][e.target] = 1
