@@ -7,10 +7,8 @@ test:
   override:
     # Run lint
     - npm run lint
-    # Run tests with coverage
-    #- npm run migrate ; npm test --coverage -- -R spec-xunit-file
-    # Extract test artifacts
-    #- cp xunit.xml ${CIRCLE_TEST_REPORTS}/
+    # Run tests
+    - npm test
 deployment:
   production:
     branch: master
