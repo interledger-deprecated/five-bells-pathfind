@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ripple/five-bells-pathfind",
   "dependencies": {
+    "bignumber.js": "^2.0.7",
     "co": "^4.5.1",
     "co-body": "^1.1.0",
     "co-each": "^0.1.0",
