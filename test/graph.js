@@ -1,56 +1,110 @@
 /* eslint-env node, mocha */
 'use strict'
 
-let assert = require('assert')
+const expect = require('chai').expect
+const randomgraph = require('randomgraph')
+const Graph = require('../lib/graph.js').Graph
 
 describe('Graph', function () {
-  describe('#findShortestPaths', function () {
-    const Graph = require('../lib/graph.js').Graph
+  describe('.findShortestPaths()', function () {
+    beforeEach(function () {
+      this.fourNodeMap = {}
+      const fourNodes = ['A', 'B', 'C', 'D']
+      for (let node1 in fourNodes) {
+        this.fourNodeMap[fourNodes[node1]] = {}
+        for (let node2 = node1; node2 < fourNodes.length; node2++) {
+          this.fourNodeMap[fourNodes[node1]][fourNodes[node2]] = 1
+        }
+      }
 
-    let map = {}
+      // This has paths A->B, A->C->B, A->D->E->B
+      this.multiplePathMap = {}
+      this.multiplePathMap['A'] = {}
+      this.multiplePathMap['C'] = {}
+      this.multiplePathMap['D'] = {}
+      this.multiplePathMap['E'] = {}
+      this.multiplePathMap['A']['C'] = 1
+      this.multiplePathMap['C']['B'] = 1
+      this.multiplePathMap['A']['D'] = 1
+      this.multiplePathMap['D']['E'] = 1
+      this.multiplePathMap['E']['B'] = 1
+      // this.multiplePathMap['A']['B'] = 1
 
-    map['USD'] = {}
-    map['USD']['JPY'] = 1
-    map['USD']['BTC'] = 1
-    map['USD']['XRP'] = 1
-    map['USD']['TED'] = 1
-    map['TED'] = {}
-    map['TED']['ALI'] = 1
-    map['XRP'] = {}
-    map['XRP']['XAU'] = 1
-    map['XRP']['ALI'] = 1
-    map['XAU'] = {}
-    map['XAU']['ALI'] = 1
-    map['ALI'] = {}
-    map['ALI']['BOB'] = 1
-    map['ALI']['TED'] = 1
+      this.simpleMap = {}
+      this.simpleMap['A'] = {}
+      this.simpleMap['B'] = {}
+      this.simpleMap['C'] = {}
+      this.simpleMap['D'] = {}
+      this.simpleMap['E'] = {}
+      this.simpleMap['F'] = {}
+      this.simpleMap['G'] = {}
+      this.simpleMap['A']['B'] = 1
+      this.simpleMap['B']['C'] = 1
+      this.simpleMap['C']['D'] = 1
+      this.simpleMap['E']['F'] = 1
+      this.simpleMap['A']['C'] = 1
+      this.simpleMap['A']['G'] = 1
+      this.simpleMap['G']['F'] = 1
+      this.simpleMap['F']['E'] = 1
+      this.simpleMap['E']['D'] = 1
 
-    const graph = new Graph(map)
-    const paths = graph.findShortestPaths('USD', 'BOB', 5)
+      const rg = randomgraph.BarabasiAlbert(400, 80, 1)
+      this.bigRandomMap = {}
+      for (let edge of rg.edges) {
+        let source = edge.source
+        if (this.bigRandomMap[source] == null) {
+          this.bigRandomMap[source] = {}
+        }
+        this.bigRandomMap[source][edge.target] = 1
+      }
+    })
+
+    it('should find the shortest path in a fully connected 4-node graph', function () {
+      const graph = new Graph(this.fourNodeMap)
+      const paths = graph.findShortestPaths('A', 'D', 1)
+      expect(paths).to.have.length(1)
+      expect(paths[0]).to.deep.equal(['A', 'D'])
+    })
+
+    it('should find the shortest path in a partially connected 4-node graph', function () {
+      delete this.fourNodeMap['A']['D']
+      const graph = new Graph(this.fourNodeMap)
+      const paths = graph.findShortestPaths('A', 'D', 1)
+      expect(paths).to.have.length(1)
+      expect(paths[0]).to.deep.equal(['A', 'B', 'D'])
+    })
+
+    it('should find the shortest path even when there are multiple valid paths', function () {
+      const graph = new Graph(this.multiplePathMap)
+      const paths = graph.findShortestPaths('A', 'B', 1)
+      expect(paths[0]).to.deep.equal(['A', 'C', 'B'])
+    })
 
     it('should find 3 paths in the simple graph', function () {
-      assert.equal(paths.length, 3)
+      const graph = new Graph(this.simpleMap)
+      const paths = graph.findShortestPaths('A', 'D', 5)
+      expect(paths).to.have.length(3)
     })
 
-    const randomgraph = require('randomgraph')
-
-    const assetCount = 400
-    const rg = randomgraph.BarabasiAlbert(assetCount, 80, 1)
-    const bigEdgeMap = {}
-    rg.edges.forEach(function (e, i) {
-      let source = e.source
-      if (bigEdgeMap[source] == null) {
-        bigEdgeMap[source] = {}
-      }
-      bigEdgeMap[source][e.target] = 1
+    it('should order paths by length if multiple are found', function () {
+      const graph = new Graph(this.simpleMap)
+      const paths = graph.findShortestPaths('A', 'D', 5)
+      expect(paths).to.have.length(3)
+      expect(paths[0].length).to.be.lessThan(paths[1].length)
+      expect(paths[1].length).to.be.lessThan(paths[2].length)
     })
 
-    const bigGraph = new Graph(bigEdgeMap)
-    const startTime = Date.now()
-    const bgPaths = bigGraph.findShortestPaths(1, 71, 100)
-    console.info('found ' + bgPaths.length + ' paths in:' + (Date.now() - startTime))
+    it('should find only the shortest path if asked for just one path', function () {
+      const graph = new Graph(this.simpleMap)
+      const paths = graph.findShortestPaths('A', 'D', 1)
+      expect(paths).to.have.length(1)
+      expect(paths[0]).to.deep.equal(['A', 'C', 'D'])
+    })
+
     it('should find at least 100 paths in the random graph', function () {
-      assert.equal(bgPaths.length, 100)
+      const graph = new Graph(this.bigRandomMap)
+      const paths = graph.findShortestPaths(1, 71, 100)
+      expect(paths).to.have.length(100)
     })
   })
 })
