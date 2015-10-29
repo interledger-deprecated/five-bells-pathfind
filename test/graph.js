@@ -60,7 +60,7 @@ describe('Graph', function () {
     })
 
     it('should find the shortest path in a fully connected 4-node graph', function () {
-      const graph = new Graph(this.fourNodeMap)
+      const graph = new Graph({map: this.fourNodeMap})
       const paths = graph.findShortestPaths('A', 'D', 1)
       expect(paths).to.have.length(1)
       expect(paths[0]).to.deep.equal(['A', 'D'])
@@ -68,26 +68,26 @@ describe('Graph', function () {
 
     it('should find the shortest path in a partially connected 4-node graph', function () {
       delete this.fourNodeMap['A']['D']
-      const graph = new Graph(this.fourNodeMap)
+      const graph = new Graph({map: this.fourNodeMap})
       const paths = graph.findShortestPaths('A', 'D', 1)
       expect(paths).to.have.length(1)
       expect(paths[0]).to.deep.equal(['A', 'B', 'D'])
     })
 
     it('should find the shortest path even when there are multiple valid paths', function () {
-      const graph = new Graph(this.multiplePathMap)
+      const graph = new Graph({map: this.multiplePathMap})
       const paths = graph.findShortestPaths('A', 'B', 1)
       expect(paths[0]).to.deep.equal(['A', 'C', 'B'])
     })
 
     it('should find 3 paths in the simple graph', function () {
-      const graph = new Graph(this.simpleMap)
+      const graph = new Graph({map: this.simpleMap})
       const paths = graph.findShortestPaths('A', 'D', 5)
       expect(paths).to.have.length(3)
     })
 
     it('should order paths by length if multiple are found', function () {
-      const graph = new Graph(this.simpleMap)
+      const graph = new Graph({map: this.simpleMap})
       const paths = graph.findShortestPaths('A', 'D', 5)
       expect(paths).to.have.length(3)
       expect(paths[0].length).to.be.lessThan(paths[1].length)
@@ -95,14 +95,14 @@ describe('Graph', function () {
     })
 
     it('should find only the shortest path if asked for just one path', function () {
-      const graph = new Graph(this.simpleMap)
+      const graph = new Graph({map: this.simpleMap})
       const paths = graph.findShortestPaths('A', 'D', 1)
       expect(paths).to.have.length(1)
       expect(paths[0]).to.deep.equal(['A', 'C', 'D'])
     })
 
     it('should find at least 100 paths in the random graph', function () {
-      const graph = new Graph(this.bigRandomMap)
+      const graph = new Graph({map: this.bigRandomMap})
       const paths = graph.findShortestPaths(1, 71, 100)
       expect(paths).to.have.length(100)
     })
