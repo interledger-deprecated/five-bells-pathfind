@@ -2,13 +2,13 @@
 
 > A reference implementation of an Interledger pathfinder
 
-You can see the pathfinder in action as part of the [`five-bells-demo`](https://github.com/ripple/five-bells-demo)!
+You can see the pathfinder in action as part of the [`five-bells-demo`](https://github.com/interledger/five-bells-demo)!
 
 ## Algorithm
 
 This library includes a network crawler, graph search algorithm implementation and rate quoting client. 
 
-The crawler uses APIs on the [`five-bells-ledger`](https://github.com/ripple/five-bells-ledger) and [`five-bells-trader`](https://github.com/ripple/five-bells-trader) to find other nodes in the network based on a given starting point.
+The crawler uses APIs on the [`five-bells-ledger`](https://github.com/interledger/five-bells-ledger) and [`five-bells-trader`](https://github.com/interledger/five-bells-trader) to find other nodes in the network based on a given starting point.
 
 This library uses [Iterative Deepening Depth-First Search](https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search) to find the shortest paths from the sending ledger to the receiving ledger.
 
