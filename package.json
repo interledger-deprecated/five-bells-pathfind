@@ -30,11 +30,11 @@
     "co-each": "^0.1.0",
     "co-emitter": "^0.2.3",
     "co-foreach": "^1.0.6",
-    "co-request": "^0.2.0",
     "co-stream": "^0.1.0",
     "lodash": "^3.5.0",
     "mag": "^0.9.1",
     "mag-hub": "^0.1.1",
+    "superagent": "^1.5.0",
     "uuid4": "^1.0.0"
   },
   "devDependencies": {
