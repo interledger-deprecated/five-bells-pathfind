@@ -3,7 +3,7 @@
 
 const expect = require('chai').expect
 const randomgraph = require('randomgraph')
-const Graph = require('../lib/graph.js').Graph
+const Graph = require('../src/graph.js').Graph
 
 describe('Graph', function () {
   describe('.findShortestPaths()', function () {
