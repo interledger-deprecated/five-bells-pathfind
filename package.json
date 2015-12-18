@@ -1,6 +1,6 @@
 {
   "name": "five-bells-pathfind",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Basic pathfinding library",
   "main": "dist/index.js",
   "scripts": {
