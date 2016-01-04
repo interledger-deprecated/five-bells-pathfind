@@ -47,7 +47,7 @@ class Crawler extends emitter {
     this.ledgers[node.uri] = node
     yield this.emit('ledger', {id: node.uri})
     let res = yield request
-      .get(node.uri + '/accounts')
+      .get(node.uri + '/connectors')
     if (res.status === 200) {
       for (let person of res.body) {
         // Currently only traders have the `identity` property set
