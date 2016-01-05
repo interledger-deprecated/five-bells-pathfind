@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
+const co = require('co')
 const BigNumber = require('bignumber.js')
 const log = require('./log')('pathfinder')
 const Graph = require('./graph').Graph
@@ -18,7 +19,7 @@ class Pathfinder {
     this.graph = {}
     this.quotingClient = new QuotingClient(this.crawler)
 
-    this.crawler.on('pair', function *(pair) {
+    this.crawler.on('pair', function (pair) {
       _this.handleNewEdge(pair)
     })
   }
@@ -31,8 +32,8 @@ class Pathfinder {
     return this.crawler.getLedgers()
   }
 
-  * crawl () {
-    yield this.crawler.crawl()
+  crawl () {
+    return co(this.crawler.crawl.bind(this.crawler))
   }
 
   handleNewEdge (pair) {
@@ -55,7 +56,7 @@ class Pathfinder {
     return cheapestPath
   }
 
-  * findPath (sourceLedger, destinationLedger, destinationAmount) {
+  * _findPath (sourceLedger, destinationLedger, destinationAmount) {
     log.info('findPath ' + sourceLedger + ' -> ' + destinationLedger)
 
     const graph = new Graph({
@@ -78,6 +79,10 @@ class Pathfinder {
     log.info('got cheapest path: ' + JSON.stringify(cheapestPath))
 
     return cheapestPath
+  }
+
+  findPath (sourceLedger, destinationLedger, destinationAmount) {
+    return co(this._findPath.bind(this), sourceLedger, destinationLedger, destinationAmount)
   }
 }
 

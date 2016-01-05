@@ -10,7 +10,7 @@ class QuotingClient {
     this.crawler = crawler
     this.pairs = {}
 
-    this.crawler.on('pair', function * (pair) {
+    this.crawler.on('pair', function (pair) {
       _this.handleTradingPair(pair)
     })
   }

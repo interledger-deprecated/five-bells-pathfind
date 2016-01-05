@@ -85,7 +85,7 @@ class Crawler extends emitter {
       }
 
       // For pathfinding we want to see all directed edges
-      yield this.emit('pair', {
+      this.emit('pair', {
         source: pair.source_ledger,
         destination: pair.destination_ledger,
         uri: node.uri
