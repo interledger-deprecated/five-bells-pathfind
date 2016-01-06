@@ -50,11 +50,11 @@ class Crawler extends emitter {
       .get(node.uri + '/connectors')
     if (res.status === 200) {
       for (let person of res.body) {
-        // Currently only traders have the `identity` property set
-        if (person.identity) {
-          if (!this.visitedNodes[person.identity]) {
-            this.visitedNodes[person.identity] = true
-            this.queueNode('trader', person.identity)
+        // Currently only traders have the `connector` property set
+        if (person.connector) {
+          if (!this.visitedNodes[person.connector]) {
+            this.visitedNodes[person.connector] = true
+            this.queueNode('trader', person.connector)
           }
         } else {
           const nodeId = person.id
