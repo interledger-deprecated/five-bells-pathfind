@@ -47,14 +47,14 @@ class Crawler extends emitter {
     this.ledgers[node.uri] = node
     yield this.emit('ledger', {id: node.uri})
     let res = yield request
-      .get(node.uri + '/accounts')
+      .get(node.uri + '/connectors')
     if (res.status === 200) {
       for (let person of res.body) {
-        // Currently only traders have the `identity` property set
-        if (person.identity) {
-          if (!this.visitedNodes[person.identity]) {
-            this.visitedNodes[person.identity] = true
-            this.queueNode('trader', person.identity)
+        // Currently only traders have the `connector` property set
+        if (person.connector) {
+          if (!this.visitedNodes[person.connector]) {
+            this.visitedNodes[person.connector] = true
+            this.queueNode('trader', person.connector)
           }
         } else {
           const nodeId = person.id
@@ -85,7 +85,7 @@ class Crawler extends emitter {
       }
 
       // For pathfinding we want to see all directed edges
-      yield this.emit('pair', {
+      this.emit('pair', {
         source: pair.source_ledger,
         destination: pair.destination_ledger,
         uri: node.uri
