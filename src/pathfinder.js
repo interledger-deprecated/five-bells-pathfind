@@ -56,19 +56,20 @@ class Pathfinder {
     return cheapestPath
   }
 
-  * _findPath (sourceLedger, destinationLedger, destinationAmount) {
-    log.info('findPath ' + sourceLedger + ' -> ' + destinationLedger)
+  * _findPath (params) {
+    log.info('findPath ' + params.sourceLedger + ' -> ' + params.destinationLedger)
 
     const graph = new Graph({
       map: this.graph,
       maxPathLength: this.maxPathLength
     })
-    const paths = graph.findShortestPaths(sourceLedger, destinationLedger, this.numPathsToQuote)
+    const paths = graph.findShortestPaths(params.sourceLedger, params.destinationLedger, this.numPathsToQuote)
 
     log.info('findPath found ' + paths.length + ' paths')
 
     const pathsQuotes = yield this.quotingClient.quotePathsFromDestination({
-      destinationAmount
+      destinationAccount: params.destinationAccount,
+      destinationAmount: params.destinationAmount
       // TODO add other params like destination expiry duration
     }, paths)
 
@@ -81,8 +82,21 @@ class Pathfinder {
     return cheapestPath
   }
 
+  // params -
+  //   sourceLedger
+  //   destinationLedger
+  //   destinationAmount
+  //   destinationAccount (optional)
   findPath (sourceLedger, destinationLedger, destinationAmount) {
-    return co(this._findPath.bind(this), sourceLedger, destinationLedger, destinationAmount)
+    if (arguments.length === 1) {
+      const params = sourceLedger
+      return co(this._findPath.bind(this), params)
+    }
+    return co(this._findPath.bind(this), {
+      sourceLedger: sourceLedger,
+      destinationLedger: destinationLedger,
+      destinationAmount: destinationAmount
+    })
   }
 }
 

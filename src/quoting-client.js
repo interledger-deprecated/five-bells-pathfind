@@ -24,6 +24,7 @@ class QuotingClient {
 
     let payments = []
     let destination = path.pop()
+    let destinationAccount = params.destinationAccount
     let destinationAmount = params.destinationAmount
     let destinationExpiryDuration = params.destinationExpiryDuration ||
       path.length + 2
@@ -35,6 +36,7 @@ class QuotingClient {
       let query = {
         source_ledger: source,
         destination_ledger: destination,
+        destination_account: destinationAccount,
         destination_amount: destinationAmount,
         destination_expiry_duration: destinationExpiryDuration
       }
@@ -46,6 +48,7 @@ class QuotingClient {
       payments.unshift(payment)
       destination = source
       destinationAmount = payment.source_transfers[0].credits[0].amount
+      destinationAccount = payment.source_transfers[0].credits[0].account
       destinationExpiryDuration = payment.source_transfers[0].expiry_duration
     }
 
