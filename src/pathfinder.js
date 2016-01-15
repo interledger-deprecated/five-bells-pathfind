@@ -87,17 +87,7 @@ class Pathfinder {
   //   destinationLedger
   //   destinationAmount
   //   destinationAccount (optional)
-  findPath (sourceLedger, destinationLedger, destinationAmount) {
-    if (arguments.length === 1) {
-      const params = sourceLedger
-      return co(this._findPath.bind(this), params)
-    }
-    return co(this._findPath.bind(this), {
-      sourceLedger: sourceLedger,
-      destinationLedger: destinationLedger,
-      destinationAmount: destinationAmount
-    })
-  }
+  findPath (params) { return co(this._findPath.bind(this), params) }
 }
 
 exports.Pathfinder = Pathfinder
