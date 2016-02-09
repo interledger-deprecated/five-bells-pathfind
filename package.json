@@ -2,12 +2,11 @@
   "name": "five-bells-pathfind",
   "version": "4.2.0",
   "description": "Basic pathfinding library",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
     "lint": "eslint src test",
-    "test": "NODE_ENV=unit node node_modules/.bin/istanbul test -- _mocha -r co-mocha",
-    "prepublish": "npm run build"
+    "test": "NODE_ENV=unit node node_modules/.bin/istanbul test -- _mocha -r co-mocha"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,6 @@
   },
   "homepage": "https://github.com/interledger/five-bells-pathfind",
   "dependencies": {
-    "babel-runtime": "^6.3.19",
     "bignumber.js": "^2.0.7",
     "co": "^4.5.1",
     "co-body": "^1.1.0",
@@ -49,6 +47,7 @@
     "babel-plugin-transform-runtime": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
+    "babel-runtime": "^6.3.19",
     "chai": "^3.2.0",
     "co-mocha": "^1.1.0",
     "co-supertest": "0.0.10",
