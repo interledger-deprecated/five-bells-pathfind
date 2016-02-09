@@ -21,3 +21,7 @@ The crawler uses APIs on the [`five-bells-ledger`](https://github.com/interledge
 This library uses [Iterative Deepening Depth-First Search](https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search) to find the shortest paths from the sending ledger to the receiving ledger.
 
 The rate quoting client requests quotes from the traders involved in a given path starting with the trader closest to the recipient and working backwards.
+
+## Browser Support
+
+This library can be compiled with [Babel](https://babeljs.io/) using the command `npm run build`. The compiled files will be in the `babel/` folder.
