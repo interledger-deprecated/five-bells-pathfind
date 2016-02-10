@@ -1,0 +1,39 @@
+{
+  "quoteArgs12": {
+    "source_ledger": "http://ledger1.example",
+    "destination_ledger": "http://ledger2.example",
+    "source_account": "http://ledger1.example/accounts/alice",
+    "source_amount": "80",
+    "source_expiry_duration": 3
+  },
+
+  "quoteArgs23": {
+    "source_ledger": "http://ledger2.example",
+    "destination_ledger": "http://ledger3.example",
+    "source_account": "http://ledger2.example/accounts/trader12",
+    "source_amount": "90",
+    "source_expiry_duration": 2
+  },
+
+  "quote12": {
+    "destination_transfers": [{
+      "debits": [{
+        "account": "http://ledger2.example/accounts/trader12",
+        "amount": "90"
+      }],
+      "credits": [{"amount": "90"}],
+      "expiry_duration": 2
+    }]
+  },
+
+  "quote23": {
+    "destination_transfers": [{
+      "debits": [{
+        "account": "http://ledger3.example/accounts/trader23",
+        "amount": "100"
+      }],
+      "credits": [{"amount": "90"}],
+      "expiry_duration": 1
+    }]
+  }
+}
