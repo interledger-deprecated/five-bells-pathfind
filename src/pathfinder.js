@@ -67,9 +67,11 @@ class Pathfinder {
 
     log.info('findPath found ' + paths.length + ' paths')
 
-    const pathsQuotes = yield this.quotingClient.quotePathsFromDestination({
-      destinationAccount: params.destinationAccount,
-      destinationAmount: params.destinationAmount
+    const pathsQuotes = yield this.quotingClient.quotePaths({
+      source_account: params.sourceAccount,
+      source_amount: params.sourceAmount,
+      destination_account: params.destinationAccount,
+      destination_amount: params.destinationAmount
       // TODO add other params like destination expiry duration
     }, paths)
 
@@ -82,11 +84,16 @@ class Pathfinder {
     return cheapestPath
   }
 
-  // params -
-  //   sourceLedger
-  //   destinationLedger
-  //   destinationAmount
-  //   destinationAccount (optional)
+  /**
+   * @param {Object} params
+   * @param {String} params.sourceLedger
+   * @param {String} params.destinationLedger
+   * @param {String} params.sourceAmount - either this or destinationAmount is required
+   * @param {String} params.destinationAmount - either this or sourceAmount is required
+   * @param {String} params.sourceAccount - provided with sourceAmount (optional)
+   * @param {String} params.destinationAccount - provided with destinationAmount (optional)
+   * @returns {Promise<[Quote]>}
+   */
   findPath (params) { return co(this._findPath.bind(this), params) }
 }
 
