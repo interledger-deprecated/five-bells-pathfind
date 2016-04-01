@@ -27,6 +27,18 @@ beforeEach(function () {
   this.client.pairs = pairs
 })
 
+describe('QuotingClient#quotePaths', function () {
+  it('throws if neither sourceAmount or destinationAmount are provided', function * () {
+    try {
+      yield this.client.quotePaths({}, [path])
+    } catch (err) {
+      assert.equal(err.message, 'requires sourceAmount or destinationAmount')
+      return
+    }
+    assert(false)
+  })
+})
+
 describe('QuotingClient#quotePathFromDestination', function () {
   const fixtures = require('./fixtures/from-destination')
   const quoteArgs12 = fixtures.quoteArgs12
@@ -35,10 +47,10 @@ describe('QuotingClient#quotePathFromDestination', function () {
   const quote23 = fixtures.quote23
 
   it('returns quotes', function * () {
-    const quote23Nock = nock('http://trader23.example').get('/quote')
+    const quote23Nock = nock('http://trader23.example').get('/quote_local')
       .query(quoteArgs23)
       .reply(200, quote23)
-    const quote12Nock = nock('http://trader12.example').get('/quote')
+    const quote12Nock = nock('http://trader12.example').get('/quote_local')
       .query(quoteArgs12)
       .reply(200, quote12)
 
@@ -59,7 +71,7 @@ describe('QuotingClient#quotePathFromDestination', function () {
   })
 
   it('throws on 400', function * () {
-    const quote23Nock = nock('http://trader23.example').get('/quote')
+    const quote23Nock = nock('http://trader23.example').get('/quote_local')
       .query(quoteArgs23)
       .reply(400)
 
@@ -85,10 +97,10 @@ describe('QuotingClient#quotePathFromSource', function () {
   const quote23 = fixtures.quote23
 
   it('returns quotes', function * () {
-    const quote12Nock = nock('http://trader12.example').get('/quote')
+    const quote12Nock = nock('http://trader12.example').get('/quote_local')
       .query(quoteArgs12)
       .reply(200, quote12)
-    const quote23Nock = nock('http://trader23.example').get('/quote')
+    const quote23Nock = nock('http://trader23.example').get('/quote_local')
       .query(quoteArgs23)
       .reply(200, quote23)
 

@@ -88,7 +88,7 @@ class QuotingClient {
   * getTraderQuote (quoteOpts) {
     const trader = this.pairs[quoteOpts.source_ledger + ';' + quoteOpts.destination_ledger]
     const res = yield request
-      .get(trader + '/quote')
+      .get(trader + '/quote_local')
       .query(quoteOpts)
     if (res.status >= 400) {
       throw new Error('Server Error: ' + res.status + ' ' + res.body)

@@ -45,12 +45,17 @@ class Pathfinder {
 
   calculateCheapestPath (paths) {
     const cheapestPath = _.reduce(paths, function (cheapestPath, testPath) {
+      // Test the first and last transfers so that either sourceAmount or
+      // destinationAmount can be provided.
       if ((new BigNumber(cheapestPath[0].source_transfers[0].credits[0].amount))
-          .lessThanOrEqualTo(testPath[0].source_transfers[0].credits[0].amount)) {
+          .lessThan(testPath[0].source_transfers[0].credits[0].amount)) {
         return cheapestPath
-      } else {
-        return testPath
       }
+      if ((new BigNumber(cheapestPath[cheapestPath.length - 1].destination_transfers[0].credits[0].amount))
+          .lessThan(testPath[testPath.length - 1].destination_transfers[0].credits[0].amount)) {
+        return cheapestPath
+      }
+      return testPath
     })
 
     return cheapestPath
@@ -64,6 +69,9 @@ class Pathfinder {
       maxPathLength: this.maxPathLength
     })
     const paths = graph.findShortestPaths(params.sourceLedger, params.destinationLedger, this.numPathsToQuote)
+      .filter(function (pair) {
+        return this.quotingClient.pairs[pair[0] + ';' + pair[1]] === params.sourceConnector
+      }, this)
 
     log.info('findPath found ' + paths.length + ' paths')
 
@@ -86,6 +94,7 @@ class Pathfinder {
 
   /**
    * @param {Object} params
+   * @param {String} params.sourceConnector
    * @param {String} params.sourceLedger
    * @param {String} params.destinationLedger
    * @param {String} params.sourceAmount - either this or destinationAmount is required
