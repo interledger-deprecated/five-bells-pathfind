@@ -29,7 +29,7 @@
     "co": "^4.5.1",
     "co-emitter": "^0.2.3",
     "lodash": "^3.5.0",
-    "superagent": "^1.5.0",
+    "superagent": "^2.0.0",
     "uuid4": "^1.0.0"
   },
   "devDependencies": {
